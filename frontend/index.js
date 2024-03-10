@@ -4,7 +4,15 @@ function moduleProject3() {
 
   function buildNav(links) {
     //  ✨ do your magic here
-    return document.createElement('nav')
+    const container = document.createElement('nav');
+    links.forEach(link => {
+      const linkEl = document.createElement("a");
+      linkEl.textContent = link.textContent;
+      linkEl.href = link.href;
+      linkEl.title = link.title;
+      container.appendChild(linkEl);
+    })
+    return container
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -20,6 +28,34 @@ function moduleProject3() {
 
   function buildLearnerCard(learner, languages) {
     //  ✨ do your magic here
+    const cardEl = document.createElement("div");
+    cardEl.classList.add("learner-card");
+
+    const nameP = document.createElement("p");
+    nameP.textContent = learner.fullName;
+    cardEl.appendChild(nameP);
+
+    const idP = document.createElement("p");
+    idP.textContent = `Learner ID: ${learner.id}`;
+    cardEl.appendChild(idP);
+
+    const birthP = document.createElement("p");
+    birthP.textContent = `Date of Birth: ${learner.dateOfBirth}`;
+    cardEl.appendChild(birthP);
+
+    const langP = document.createElement("p");
+    const favLang = languages.find(lang => lang.id === learner.favLanguage);
+    langP.textContent = `Favorite Language: ${favLang.name}`;
+    cardEl.appendChild(langP);
+
+    cardEl.addEventListener("click", () => {
+      document.querySelectorAll(".learner-card").forEach(card => {
+        card.classList.remove("active")
+      })
+      cardEl.classList.add("active");
+    })
+
+    return cardEl
   }
 
   {
@@ -40,13 +76,62 @@ function moduleProject3() {
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
     //  ✨ do your magic here
+    learners.forEach(learner => {
+      const learnerCard = buildLearnerCard(learner, languages)
+      document.querySelector("section").appendChild(learnerCard)
+    })
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
     //  ✨ do your magic here
-    return document.createElement('footer')
+    const footer = document.createElement('footer');
+
+    const infoContainer = document.createElement("div");
+    infoContainer.classList.add("company-info");
+    footer.appendChild(infoContainer);
+
+    const companyNameP = document.createElement("p");
+    companyNameP.classList.add("company-name");
+    companyNameP.textContent = footerData.companyName;
+    infoContainer.appendChild(companyNameP);
+
+    const addressP = document.createElement("p");
+    addressP.classList.add("address");
+    addressP.textContent = footerData.address;
+    infoContainer.appendChild(addressP);
+
+    const emailP = document.createElement("p");
+    emailP.classList.add("contact-email");
+    emailP.innerHTML = `Email: <a href="mailto:${footerData.contactEmail}"> ${footerData.contactEmail}</a>`
+    infoContainer.appendChild(emailP);
+
+    const socialContainer = document.createElement("div");
+    socialContainer.classList.add("social-media");
+    footer.appendChild(socialContainer);
+    
+    const twitterL = document.createElement("a");
+    twitterL.href = footerData.socialMedia.twitter;
+    twitterL.textContent = "Twitter";
+    socialContainer.appendChild(twitterL);
+
+    const facebookL = document.createElement("a");
+    facebookL.href = footerData.socialMedia.facebook;
+    facebookL.textContent = "Facebook";
+    socialContainer.appendChild(facebookL);
+
+    const instaL = document.createElement("a");
+    instaL.href = footerData.socialMedia.instagram;
+    instaL.textContent = "Instagram";
+    socialContainer.appendChild(instaL);
+
+    let currentYear = new Date().getFullYear();
+    const copyrightContainer = document.createElement("div");
+    copyrightContainer.textContent = `© ${footerData.companyName.toUpperCase()} ${currentYear}`;
+    footer.appendChild(copyrightContainer);
+
+    return footer
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
@@ -64,6 +149,13 @@ function moduleProject3() {
   // 👉 TASK 4 - Clicking on the section should deactivate the active card
 
   //  ✨ do your magic here
+  const pageSection = document.querySelector("section");
+  document.addEventListener("click", evt => {
+    if (evt.target === pageSection) {
+      const learners = document.querySelectorAll(".learner-card")
+      learners.forEach(card => card.classList.remove("active"))
+    }
+  })
 }
 
 // ❗ DO NOT CHANGE THIS CODE
